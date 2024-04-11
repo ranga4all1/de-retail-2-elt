@@ -1,0 +1,15 @@
+# include/soda/configuration.yml
+data_source retail:
+  type: bigquery
+  connection:
+    account_info_json_path: /usr/local/airflow/include/gcp/service_account.json
+    auth_scopes:
+    - https://www.googleapis.com/auth/bigquery
+    - https://www.googleapis.com/auth/cloud-platform
+    - https://www.googleapis.com/auth/drive
+    project_id: 'abiding-octane-419822'
+    dataset: retail
+soda_cloud:
+  host: cloud.us.soda.io
+  api_key_id: 7accb537-59c5-4ff4-8c30-2ab935b26d3f
+  api_key_secret: hTivWCW12yWM-ApDjtwcaULxaZEvs3gqJkyOllpz2G5orwRKfcxS-Q
