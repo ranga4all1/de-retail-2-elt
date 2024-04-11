@@ -39,6 +39,24 @@ Note: A free version of above should suffice for this project
 - GCP Bigquery - OLAP Data warehouse
 
 
+## Steps
+
+- Download the dataset https://www.kaggle.com/datasets/tunguz/online-retail
+    - Store the csv file in `include/dataset/online_retail_raw.csv`
+- Create a GCS bucket with a unique name `<your_name>_online_retail`
+- Create a service account with a name `airflow-online-retail`
+    - Grant admin access to GCS + BigQuery
+    - Click on the service account → Keys → Add Key → Copy the JSON content
+    - Create a new file `service_account.json` in `include/gcp/` and paste keyfile contents into it
+    
+        Note: Make sure to add `include/gcp/` to .gitignore
+
+- Follow the steps/commands from `include/extras/commands` file to test individual tasks in DAG
+- In the browser, go to Airflow (http://localhost:8080/) and click Run button for `retail` DAG. Ensure that all tasks in DAG are successfully completed.
+- Verify in GCS bucket and Bigquery that all files are created by DAG as expected
+- In the browser, go to Metabase (http://localhost:3000/) and create visualizations/dashboard by connecting to BigQuery DWH: `retail` tables
+
+
 ## Pipeline
 
 - Airflow DAG

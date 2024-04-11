@@ -1,7 +1,12 @@
-# project_id=abiding-octane-419822
-# gcs_bucket=rh_online_retail
+'''
+Update below parameters with your values from GCP account. 
+Update all necesary files in this repo with those parameters.
 
+# project_id=<your_project_id>
+# gcs_bucket=<your_name>_online_retail
+'''
 
+# Astro
 astro dev start
 astro dev stop
 astro dev restart
