@@ -163,7 +163,6 @@ tests/dags/test_dag_example.py
 .astro/test_dag_integrity_default.py
 include/dataset/eda.ipynb
 include/gcp/service_account.json
-include/extras/
 include/dbt/dbt_packages/
 include/dbt/logs/
 include/dataset/online_retail.csv

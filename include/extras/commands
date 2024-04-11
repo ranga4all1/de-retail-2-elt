@@ -1,0 +1,42 @@
+# project_id=abiding-octane-419822
+# gcs_bucket=rh_online_retail
+
+
+astro dev start
+astro dev stop
+astro dev restart
+
+# Test DAG tasks
+airflow tasks test retail process_csv 2024-01-01
+airflow tasks test retail upload_csv_to_gcs 2024-01-01
+airflow tasks test retail create_retail_dataset 2024-01-01
+airflow tasks test retail gcs_to_raw 2024-01-01
+
+# soda checks
+soda scan -d retail -c include/soda/configuration.yml include/soda/checks/sources/raw_invoices.yml
+airflow tasks test retail check_load 2024-01-01
+
+# Run the dbt models
+astro dev bash
+source /usr/local/airflow/dbt_venv/bin/activate
+cd include/dbt 
+dbt deps
+dbt run --profiles-dir /usr/local/airflow/include/dbt/
+
+# test dbt tasks via DAG
+astro dev bash
+airflow tasks list retail
+airflow tasks test retail transform.dim_customer.dim_customer_run 2024-01-01
+airflow tasks test retail transform.dim_customer.dim_customer_test 2024-01-01
+
+# Run the dbt report tasks
+astro dev bash
+cd include/dbt
+source /usr/local/airflow/dbt_venv/bin/activate
+dbt run --select path:models/report --profiles-dir /usr/local/airflow/include/dbt/
+
+# soda checks for reports
+cd /usr/local/airflow
+source /usr/local/airflow/soda_venv/bin/activate
+soda scan -d retail -c include/soda/configuration.yml include/soda/checks/report/*
+
