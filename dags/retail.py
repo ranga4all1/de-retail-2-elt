@@ -44,6 +44,15 @@ def retail():
         mime_type='text/csv',
         )
     
+    upload_country_csv_to_gcs = LocalFilesystemToGCSOperator(
+        task_id='upload_country_csv_to_gcs',
+        src='/usr/local/airflow/include/dataset/country.csv',
+        dst='raw/country.csv',
+        bucket='rh_online_retail',
+        gcp_conn_id='gcp',
+        mime_type='text/csv',
+        )
+    
     create_retail_dataset = BigQueryCreateEmptyDatasetOperator(
         task_id='create_retail_dataset',
         dataset_id='retail',
@@ -61,6 +70,21 @@ def retail():
             name='raw_invoices',
             conn_id='gcp',
             metadata=Metadata(schema='retail')
+        ),
+        use_native_support=False,
+    )
+
+    gcs_to_country = aql.load_file(
+        task_id='gcs_to_country',
+        input_file=File(
+            'gs://rh_online_retail/raw/country.csv',
+            conn_id='gcp',
+            filetype=FileType.CSV,
+        ),
+        output_table=Table(
+            name='country',
+            conn_id='gcp',
+            metadata=Metadata(schema='retail'),
         ),
         use_native_support=False,
     )
@@ -113,8 +137,10 @@ def retail():
     chain(
         csv_task,
         upload_csv_to_gcs,
+        upload_country_csv_to_gcs,
         create_retail_dataset,
         gcs_to_raw,
+        gcs_to_country,
         check_load_task,
         transform,
         check_transform_task,
@@ -122,6 +148,6 @@ def retail():
         check_report_task,
     )
 
-    # csv_task >> upload_csv_to_gcs >> create_retail_dataset >> gcs_to_raw >> check_load_task >> transform >> check_transform_task >> report >> check_report_task
+    # csv_task >> upload_csv_to_gcs >> upload_country_csv_to_gcs >> create_retail_dataset >> gcs_to_raw >> gcs_to_country >> check_load_task >> transform >> check_transform_task >> report >> check_report_task
     
 retail()
