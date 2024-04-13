@@ -1,6 +1,11 @@
 # de-retail-2-elt
 A complete data engineering project with ELT pipeline for online Retail Sales
 
+ELT(Extract, Load, and Transform) loads raw data directly into the target data warehouse with no or minimal transformation. Data is then transformed within the data warehouse when needed. With reduction in cloud services costs over the years, ELT is often used in conjunction with modern data warehouses and big data platforms that support distributed processing and analytics
+
+Overall, a data engineering/analysis project for retail data empowers business to extract actionable insights, drive innovation, and stay competitive in today's dynamic retail landscape. By harnessing the power of data, retailers can unlock new opportunities for growth, efficiency, and customer satisfaction. Streamlining data pipelines and automating data workflows significantly enhances operational efficiency within retail organization. By reducing manual effort, eliminating data silos, and ensuring data consistency and integrity, business can save time and resources while improving overall productivity.
+
+The framework used in this project can be easily adapted to any other retail/Wholesale dataset.
 
 ## Dataset
 
@@ -37,6 +42,16 @@ Note: A free version of above should suffice for this project
     - metabse - Data visualization
 - GCP storage bucket - Data lake
 - GCP Bigquery - OLAP Data warehouse
+
+
+## Pipeline architecture
+
+![Pipeline architecture](include/images/de-retail-2-elt.png)
+
+
+## Data modeling
+
+![Data modeling](include/images/data-modeling.png)
 
 
 ## Steps
